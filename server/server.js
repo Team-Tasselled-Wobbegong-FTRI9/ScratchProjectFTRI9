@@ -3,7 +3,7 @@ const express = require('express');
 
 const app = express();
 
-const questionRouter = require('./routes/question');
+// const questionRouter = require('./routes/question');
 
 const PORT = 3000;
 
