@@ -6,9 +6,9 @@ const router = express.Router();
 
 /* create a record at user table at signup. retrieve all inputed fields from user.*/
 
-router.post('/signup', (req, res) => {
+router.post('/signup', appControllers.createUser, appControllers.createCondition, appControllers.createLocation, appControllers.createProfile, (req, res) => {
   console.log("inside router. /signup");
-  res.status(200).json();  
+  res.status(200).json(res.locals.res);  
 });
 
 /* route login attempts to confirm user's username and password */
@@ -22,9 +22,9 @@ router.post('/login', (req, res) => {
 '/username/{:username}' Retrieve providers/patient based on match contained in user profile State (or improve the response back) 
 */
 router.get('/username/:username', (req, res) => {
-    
-    console.log('username:/username route' + req.params.username);
-    res.status(200).send("action to grab users:" + req.params.username);
+    console.log(req.params.username)
+    console.log('username:/username route' );
+    res.status(200).send("action to grab users:");
 }
 );
 
@@ -34,7 +34,7 @@ router.post('/request', (req, res) => {
     console.log('/request route');
     /*const {patient_id, provider_id, starttime, endtime, startdate, enddate, days , message, status } = req.body; */
   
-    res.status(200).json();
+    res.status(200).send("/request route");
     
   });
 
