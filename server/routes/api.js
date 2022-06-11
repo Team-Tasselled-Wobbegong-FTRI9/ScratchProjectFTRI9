@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/signup', appControllers.createUser, appControllers.createCondition, appControllers.createLocation, appControllers.createProfile, (req, res) => {
   console.log("inside router. /signup");
-  res.status(200).json(res.locals.res);  
+  res.status(200).json(res.locals.response);  
 });
 
 /* route login attempts to confirm user's username and password */
