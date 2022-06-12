@@ -86,6 +86,10 @@ export default function Signup() {
             console.log(data);
             fetch('/api/signup', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                  },
                 body: JSON.stringify(data)})
                 .catch(err => console.log(err));
 
