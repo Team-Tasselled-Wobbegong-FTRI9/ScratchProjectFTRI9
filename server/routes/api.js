@@ -42,6 +42,16 @@ router.post('/request', appControllers.createRequest, (req, res) => {
   });
 
 
+  /* gathers request of services for users - must submit user ID, user role*/
+router.get('/request/:role/:id', appControllers.getRequest, (req, res) => {
+  console.log('ran /request route');
+  /*const {patient_id, provider_id, starttime, endtime, startdate, enddate, days , message, status } = req.body; */
+
+  res.status(200).json(res.locals.request);
+  
+});
+
+
   module.exports = router;
 
 

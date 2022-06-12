@@ -395,6 +395,52 @@ appControllers.createRequest = (req, res, next) => {
 
 };
 
+appControllers.getRequest = (req, res, next)=> {
+
+ let queryObj = {};
+
+  if (req.params.role == 'provider')
+  {
+  queryObj = {
+    text: 'SELECT * FROM request WHERE provider_id = $1', 
+    values: [req.params.id ]
+  };
+} else {
+  queryObj = {
+    text: 'SELECT * FROM request WHERE patient_id = $1', 
+    values: [req.params.id ]
+  };
+
+}
+
+  db.query(queryObj)
+  .then(response => {
+  
+    if (response.rows.length > 0)
+    { 
+      res.locals.request = response.rows[0];
+     
+      console.log('Request Queue', response.rows[0]);
+      
+    }else
+    {  
+     res.locals.request = null;
+
+    } 
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to find healthcare requests: ${err}`);
+    return next(err);
+  });
+
+  
+};
+
+
+
+
+
 /* 
 /api/signup (Post)
 username, password, age (String), weight (String), address (String), city(String), state (String, 2-Letter), zip(String), role (patient, provider) 
