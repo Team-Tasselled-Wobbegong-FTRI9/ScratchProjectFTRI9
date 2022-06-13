@@ -6,7 +6,7 @@ import ProviderList from './ProviderList.jsx';
 export default function Homepage({vUsername, id}) {
 
     const [info, setInfo] = useState([]);
-    console.log(id)
+  console.log(id);
     
     useEffect(() => {
         fetch(`/api/username/${vUsername}/${id}`)
@@ -21,7 +21,7 @@ export default function Homepage({vUsername, id}) {
   return (
     <div>
       <Header vUsername={vUsername}/>
-      <Sidebar/>
+      <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
       <ProviderList info={info}/>
     </div>
   );
