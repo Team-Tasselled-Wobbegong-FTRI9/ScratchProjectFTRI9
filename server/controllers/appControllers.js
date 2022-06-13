@@ -57,7 +57,7 @@ appControllers.createUser, appControllers.createCondition, appControllers.create
 */
 appControllers.createUser = (req, res, next) => {
 
-    
+    console.log(req);
     const queryObj = {
         text: 'INSERT INTO user_accounts (username, password, role) VALUES ($1, $2, $3) RETURNING id ',
         values: [req.body.username, req.body.password, req.body.role]
@@ -92,8 +92,8 @@ appControllers.createCondition = (req, res, next) => {
 
   db.query(queryObj)
     .then(response => {
-      console.log("conditions added");
-      return next()
+      console.log('conditions added');
+      return next();
     })
     .catch(err => {
       console.log(`Error trying to add conditions: ${err}`);
@@ -113,28 +113,28 @@ appControllers.createLocation = (req, res, next) => {
 
       db.query(locObj)
       .then(response => {
-        console.log("location found");
+        console.log('location found');
         console.log(response.rows);
         if (response.rows.length > 0){
           console.log('in location response location', response.rows[0]);
             res.locals.location_id = response.rows[0].id;
-            console.log("res locals",res.locals.location_id)
+            console.log('res locals',res.locals.location_id);
             next();
         } else
         {
-          console.log("new location case")
+          console.log('new location case');
             const queryObj = {
                 text: ' INSERT INTO location (city, state, zipcode) VALUES ($1, $2, $3) RETURNING ID ',
                 values: [  city, state, zipcode ]
               };
-               console.log("new record for locaiton")
+               console.log('new record for locaiton');
               db.query(queryObj)
                 .then(response => {
                   console.log("new location created");
                   res.locals.location_id = response.rows[0].id;
                   console.log(res.locals.location_id, response.rows);
                   next();
-                })
+                });
 
         }
       
@@ -213,10 +213,11 @@ appControllers.getUsers = (req,res,next)=> {
 }
 
 appControllers.getIdRole = (req, res, next)=> {
-
+console.log('getIdRole');
+  
   const queryObj = {
-    text: 'SELECT id, username, role FROM user_accounts WHERE username = $1', 
-    values: [req.params.username ]
+    text: 'SELECT id, username, role FROM user_accounts WHERE id = $1', 
+    values: [req.params.id ]
   };
 
   db.query(queryObj)
@@ -227,7 +228,10 @@ appControllers.getIdRole = (req, res, next)=> {
       res.locals.id = response.rows[0].id;
       res.locals.role = response.rows[0].role;
       res.locals.username = response.rows[0].username;
-      console.log('getIDRole Response:', response.rows[0]);
+      //console.log('getIDRole Response:', response.rows[0]);
+      //console.log('id', res.locals.id);
+      //console.log('role', res.locals.role)
+     // console.log('username', res.locals.username)
       
     }else
     {  
@@ -249,8 +253,8 @@ appControllers.getIdRole = (req, res, next)=> {
 appControllers.getUserLocation = (req, res, next)=> {
 
   const queryObj = {
-    text: 'SELECT state, zipcode, city FROM location WHERE id = (SELECT location_id FROM profile WHERE user_id = (SELECT id FROM user_accounts WHERE username = $1));', 
-    values: [res.locals.username ]
+    text: 'SELECT state, zipcode, city FROM location WHERE id = (SELECT location_id FROM profile WHERE user_id = $1);', 
+    values: [res.locals.id ]
   };
 
   db.query(queryObj)
@@ -292,7 +296,7 @@ appControllers.getProviderByCity = (req, res, next) => {
     if (response.rows.length > 0)
     { 
       res.locals.providersByCity = response.rows; 
-      console.log(res.locals.providersByCity);
+      console.log(res.locals.userCity);
       
     }else
     {  

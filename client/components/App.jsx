@@ -14,12 +14,10 @@ function App() {
 
     
 function updateAppState(data) {
-   
     setvUsername(data.username);
     setId(data.id);
     setRole(data.role);
     setVerify(data.verify);
-
 }
     return (
         <Router>
@@ -40,9 +38,9 @@ function updateAppState(data) {
                     updateAppState={updateAppState}/>
                 }/>
 
-                <Route path={`/${vUsername}`} element={
+                <Route path={'/home/:username/:id'} element={
                     <div>
-                        <Homepage vUsername={vUsername}/>
+                        <Homepage vUsername={vUsername} id={id}/>
                     </div>
                 }/>
             </Routes>
