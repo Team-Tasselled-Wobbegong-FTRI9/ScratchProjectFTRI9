@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Popup from './Popup.jsx';
 
-export default function ProviderCard({provider}) {
+export default function ProviderCard({provider, patient_id}) {
     const {email, firstname, lastname, city, state, conditions} = provider;
     // const {username, password, email, firstname, lastname, age, weight, role, address, city, state, zipcode, phone, conditions, language} = info;
     const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +22,8 @@ export default function ProviderCard({provider}) {
             firstname={firstname}
             lastname={lastname}
             togglePopup={togglePopup}
+            provider={provider}
+            patient_id={patient_id}
             />}
 
         </div>

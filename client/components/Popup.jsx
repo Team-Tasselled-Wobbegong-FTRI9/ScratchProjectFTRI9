@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
  
-function Popup({togglePopup, firstname, lastname}) {
+function Popup({togglePopup, firstname, lastname, provider, patient_id}) {
    
     const [starttime, setStarttime] = useState('');
     const [endtime, setEndtime] = useState('');
@@ -19,7 +19,31 @@ function Popup({togglePopup, firstname, lastname}) {
     const [status, setStatus] = useState('pending');
 
     function handleClick() {
-   
+      const data = {starttime, 
+        endtime, 
+        startdate, 
+        enddate, 
+        m: days.m, 
+        t: days.t,
+        w: days.w,
+        th: days.th,
+        f: days.f,
+        sat: days.sat,
+        sun: days.sun,
+        message, 
+        status, 
+        provider_id: provider.id, 
+        patient_id}
+      fetch('/api/request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then()
+
     }
     function clean() {
    
