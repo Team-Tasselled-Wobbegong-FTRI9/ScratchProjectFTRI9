@@ -27,7 +27,7 @@ router.post('/login',appControllers.loginUser, (req, res) => {
 
 
 */
-router.get('/username/:username/:id', appControllers.getIdRole, appControllers.getUserLocation, appControllers.getProviderByState, appControllers.getProviderByCity, (req, res) => {
+router.get('/username/:username/:id', appControllers.getIdRole, appControllers.getUserLocation, appControllers.getProviderByState, appControllers.getProviderByCity, appControllers.getProviderByZipcode, (req, res) => {
     console.log(req.params.username);
     console.log('username:/username/:id route' );
     res.status(200).json({'ZipCode': res.locals.providersByZipcode,'State':res.locals.providersByState, 'City':res.locals.providersByCity});
