@@ -1,25 +1,46 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-export default function Login({verify, setVerify, id, setId, vUsername, setvUsername, role, setRole}) {
+
+
+export default function Login(props) {
+  console.log(props);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   function makeRequest() {
+
+    
     if (username === '' || password === '') {
       alert('Please fill out both fields.');
     } else {
       const data = {username, password};
+     
       fetch('/api/login', {
         method: 'POST',
-        body: JSON.stringify(data)
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({username, password})
       })
       .then(res => res.json())
       .then(data => {
-        setVerify(data.verify);
-        setId(data.id);
-        // setvUsername(data.username);
-        setRole(data.role);
+        console.log('from server', data);
+       
+        if (data.verify === true) {
+          console.log(props);
+          props.updateAppState(data);
+          alert('Login Successful!');
+          console.log(data);
+       // window.location.href = `api/username/${data.username}`;
+        } else {
+          alert('Check your credentials');
+          props.setUsername('');
+          props.setPassword('');
+        }
       })
       .catch(err => console.log(err));
 
@@ -31,18 +52,8 @@ export default function Login({verify, setVerify, id, setId, vUsername, setvUser
     //       alert('Login Successful!');
     //       window.location.href = `/${vUsername}`;
     //   }
-
-      if (username === 'angel') {
-        console.log('angel is username');
-        setvUsername(username);
-        console.log('vUsername: ', vUsername);
-        alert('Login Successful!');
-        window.location.href = `/${vUsername}`;
-      } else {
-        alert('Check your credentials');
-        setUsername('');
-        setPassword('');
-      }
+    
+      
 
     }
   }
