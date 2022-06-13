@@ -7,8 +7,6 @@ export default function Homepage({ vUsername, id, info, setInfo, updateInfo, req
 
     const [providerInfo, setProviderInfo] = useState({City:[], State:[], ZipCode:[]});
     useEffect(() => {
-        console.log('in userEffect username:', vUsername)
-        console.log('in userEffect', id);
         fetch(`/api/username/${vUsername}/${id}`)
         .then(response => response.json())
         //getting null value when not found
@@ -16,12 +14,10 @@ export default function Homepage({ vUsername, id, info, setInfo, updateInfo, req
             console.log(data);
             updateInfo(data);
             setProviderInfo(data);
-
         })
         .catch(err => console.log(err));
     }, []);
 
- console.log(providerInfo)
   return (
     <div>
       <Header vUsername={vUsername}/>

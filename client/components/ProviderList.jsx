@@ -24,7 +24,7 @@ export default function ProviderList({ providerInfo, patient_id, requestInfo, se
     if (providerInfo.State === null) {
       providerInfo.State = [];
     }
-    const providerByCity = [...providerInfo.ZipCode, ...providerInfo.City, ...providerInfo.State];
+    const providerByCity = [...providerInfo.State];
     result = providerByCity.map((provider, ind) => <ProviderCard key={`ProviderCard: ${ind}`} provider={provider} patient_id={patient_id} requestInfo={requestInfo} setRequestInfo={setRequestInfo} />);
   }
 
