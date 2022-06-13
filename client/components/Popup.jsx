@@ -1,14 +1,22 @@
 import React, {useState} from 'react';
  
-function Popup({togglePopup}) {
+function Popup({togglePopup, firstname, lastname}) {
    
-    const [starttime, setStarttime] = useState();
-    const [endtime, setEndtime] = useState();
-    const [startdate, setStartdate] = useState();
-    const [enddate, setEnddate] = useState();
-    const [days, setDays] = useState();
-    const [message, setMessage] = useState();
-    const [status, setStatus] = useState();
+    const [starttime, setStarttime] = useState('');
+    const [endtime, setEndtime] = useState('');
+    const [startdate, setStartdate] = useState('');
+    const [enddate, setEnddate] = useState('');
+    const [days, setDays] = useState({
+      m: false,
+      t: false,
+      w: false,
+      th: false,
+      f: false,
+      sat: false,
+      sun: false
+    });
+    const [message, setMessage] = useState('');
+    const [status, setStatus] = useState('pending');
 
     function handleClick() {
    
@@ -17,30 +25,57 @@ function Popup({togglePopup}) {
    
     }
 
+    function daysHandler(e) {
+      if (e.target.checked) {
+        const copy = {...days};
+        copy[e.target.name] = true;
+        setDays(copy);
+      } else {
+        const copy = {...days};
+        copy[e.target.name] = false;
+        setDays(copy);
+      }
+    }
+
+console.log(starttime)
+console.log(endtime)
+console.log(days)
   return (
     <div className="popup-box">
       <div className="box">
         <span className="close-icon" onClick={togglePopup}>x</span>
+        <div>Patient Request Form:<br/> TO {firstname} {lastname}</div><br/>
         <label>Date Start:&nbsp; &nbsp; </label>
-        <input id='inputBox1' value={0} 
-        onChange={(e) => {}} 
-        placeholder={0}/><br/><br/>
+        <input type='date' id='startdate' value={startdate}
+        onChange={(e) => {setStartdate(e.target.value);}} /><br/>
 
-        <label>Answer:&nbsp; &nbsp; </label>
-        <input id='inputBox1' value={0} 
-        onChange={(e) => { }} 
-        placeholder={0}/><br/><br/>
+        <label>Date End:&nbsp; &nbsp; </label>
+        <input type='date' id='enddate' value={enddate}
+        onChange={(e) => {setEnddate(e.target.value);}} /><br/><br/>
 
-        <label>Question Type: &nbsp; &nbsp; </label>
-        <select id='inputBox1' value={0} onChange={(e) => { }}>
-            <option value="Blank">(Blank: Must Choose One)</option>
-            <option value="Technical">Technical</option>
-            <option value="Behavioral">Behavioral</option>
-        </select><br/><br/>
+        <label>Daily Start-Time:&nbsp; &nbsp; </label>
+        <input type='time' id='starttime' value={starttime}
+        onChange={(e) => {setStarttime(e.target.value);}} /><br/>
 
-        <label>Company:&nbsp; &nbsp; </label>
-        <input id='inputBox1' value={0} onChange={(e) => { }} 
-        placeholder={0}/><br/><br/>
+        <label>Daily End-Time:&nbsp; &nbsp; </label>
+        <input type='time' id='endtime' value={endtime}
+        onChange={(e) => {setEndtime(e.target.value);}} /><br/><br/>
+
+
+
+        <label>Days:<br/>
+            <input type="checkbox" name='m' checked={days.m} onChange={daysHandler} />M&nbsp;&nbsp;
+            <input type="checkbox" name='t' checked={days.t} onChange={daysHandler} />T&nbsp;&nbsp;
+            <input type="checkbox" name='w' checked={days.w} onChange={daysHandler} />W&nbsp;&nbsp;
+            <input type="checkbox" name='th' checked={days.th} onChange={daysHandler} />TH&nbsp;&nbsp;
+            <input type="checkbox" name='f' checked={days.f} onChange={daysHandler} />F&nbsp;&nbsp;
+            <input type="checkbox" name='sat' checked={days.sat} onChange={daysHandler} />SAT&nbsp;&nbsp;
+            <input type="checkbox" name='sun' checked={days.sun} onChange={daysHandler} />SUN&nbsp;&nbsp;
+        </label><br/><br/>
+
+        <label>Message:&nbsp; &nbsp; </label>
+        <textarea id='inputBox1' col='30' rows='5' value={message} onChange={(e) => {setMessage(e.target.value);}} 
+        placeholder='Describe Any Additional Information about Yourself'/><br/><br/>
 
         <input id='submitBtn' onClick={handleClick} type="submit" value="Submit"></input>
         <input id='submitBtn' onClick={clean} type="reset" value="Reset"></input>
