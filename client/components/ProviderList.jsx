@@ -1,7 +1,7 @@
 import React from 'react';
 import ProviderCard from './ProviderCard.jsx';
 
-export default function ProviderList({providerInfo, patient_id}) {
+export default function ProviderList({ providerInfo, patient_id, requestInfo, setRequestInfo }) {
 
 
   // const fake = [{firstname: 'kevin', lastname: 'park', email: 'kevin@gmail.com', city: 'hi', state: 'hi', conditions: 'hi'},
@@ -25,7 +25,7 @@ export default function ProviderList({providerInfo, patient_id}) {
       providerInfo.State = [];
     }
     const providerByCity = [...providerInfo.ZipCode, ...providerInfo.City, ...providerInfo.State];
-    result = providerByCity.map((provider, ind) => <ProviderCard key={`ProviderCard: ${ind}`} provider={provider} patient_id={patient_id}/>);
+    result = providerByCity.map((provider, ind) => <ProviderCard key={`ProviderCard: ${ind}`} provider={provider} patient_id={patient_id} requestInfo={requestInfo} setRequestInfo={setRequestInfo} />);
   }
 
   return (

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
 import Homepage from './Homepage.jsx';
-import Requests from './Requests.jsx'
+import Requests from './Requests.jsx';
 
 
 
@@ -13,7 +13,7 @@ function App() {
     const [vUsername, setvUsername] = useState('');
     const [role, setRole] = useState('');
     const [info, setInfo] = useState([]);
-
+    const [requestInfo, setRequestInfo] = useState([]);
 
 function updateInfo(data) {
     setInfo(data);
@@ -46,11 +46,11 @@ function updateAppState(data) {
 
                 <Route path={'/home/:username/:id'} element={
                     <div>
-                        <Homepage vUsername={vUsername} id={id} info={info} setInfo={setInfo} updateInfo={updateInfo}/>
+                        <Homepage vUsername={vUsername} id={id} info={info} setInfo={setInfo} updateInfo={updateInfo} requestInfo={requestInfo} setRequestInfo={setRequestInfo} />
                     </div>
                 }/>
                 <Route path='/requests' element={
-                    <Requests vUsername={vUsername} id={id} info={info} setInfo={setInfo} updateInfo={updateInfo} />
+                    <Requests vUsername={vUsername} id={id} info={info} setInfo={setInfo} updateInfo={updateInfo} requestInfo={requestInfo} />
                 } />
             </Routes>
         </Router>

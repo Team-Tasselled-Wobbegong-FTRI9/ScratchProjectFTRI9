@@ -3,7 +3,7 @@ import Header from './Header.jsx';
 import Sidebar from './Sidebar.jsx';
 import ProviderList from './ProviderList.jsx';
 
-export default function Homepage({vUsername, id, info, setInfo, updateInfo}) {
+export default function Homepage({ vUsername, id, info, setInfo, updateInfo, requestInfo, setRequestInfo }) {
 
     const [providerInfo, setProviderInfo] = useState({City:[], State:[], ZipCode:[]});
     useEffect(() => {
@@ -25,8 +25,8 @@ export default function Homepage({vUsername, id, info, setInfo, updateInfo}) {
   return (
     <div>
       <Header vUsername={vUsername}/>
-      <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
-      <ProviderList patient_id={id} providerInfo={providerInfo}/>
+      <Sidebar vUsername={vUsername} id={id} pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
+      <ProviderList patient_id={id} providerInfo={providerInfo} requestInfo={requestInfo} setRequestInfo={setRequestInfo} />
     </div>
   );
 }

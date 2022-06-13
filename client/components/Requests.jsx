@@ -3,31 +3,16 @@ import Header from './Header.jsx';
 import Sidebar from './Sidebar.jsx';
 import RequestCard from './RequestCard.jsx';
 
-export default function Homepage({ vUsername, id, info, setInfo, updateInfo }) {
-  console.log(info);
-  console.log('hi');
+export default function Requests({ vUsername, id, info, setInfo, updateInfo, requestInfo }) {
 
-  // const [providerInfo, setProviderInfo] = useState({ City: [], State: [], ZipCode: [] });
-  // useEffect(() => {
-  //   console.log('in userEffect username:', vUsername)
-  //   console.log('in userEffect', id);
-  //   fetch(`/api/username/${vUsername}/${id}`)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       console.log(data);
-  //       updateInfo(data);
-  //       setProviderInfo(data);
-
-  //     })
-  //     .catch(err => console.log(err));
-  // }, []);
-
-
+  const result = requestInfo.map((request, ind) => <RequestCard key={`RequestCard: ${ind}`} firstname={request.firstname} lastname={request.lastname} conditions={request.conditions} />)
+  console.log('requestInfo in Requests', requestInfo)
+  console.log(result)
   return (
     <div>
       <Header vUsername={vUsername} />
       <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
-      <RequestCard />
+      {result}
     </div>
   );
 }
