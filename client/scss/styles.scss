@@ -1,5 +1,7 @@
 body {
-  margin: 5px;
+  background-color: white;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 form >* {
@@ -12,3 +14,50 @@ input, select {
   border: .5px black solid;
 }
 
+.container {
+  background: rgb(92, 199, 142);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  color: white;
+  padding-right: 5%;
+  padding-left: 5%;
+}
+
+.header__link__logo {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+  padding-left: 0px;
+  li {
+    padding-left: 0px;
+    transition-duration: 0.2s;
+    color: var(--text-color);
+    &:hover {
+        color: var(--hover-color);
+    }
+    button {
+        padding: 8px 12px;
+        border-radius: 3px;
+        border: 1px solid #FAEBEFFF;
+        color: #FAEBEFFF;
+        margin: 0px 8px;
+        background-color: transparent;
+        font-size: 16;
+        font-weight: bold;
+        transition-duration: 0.2s;
+        &:hover {
+            background-color: #FAEBEFFF;
+            color: black;
+            cursor: pointer;
+        }
+    }
+  }
+}
+
+#loginlogo {
+  width: 50px;
+}

@@ -4,12 +4,23 @@ import Signup from './Signup.jsx';
 import Login from './Login.jsx';
 import Homepage from './Homepage.jsx';
 
+
+
 function App() {
     const [verify, setVerify] = useState(false);
     const [id, setId] = useState('');
     const [vUsername, setvUsername] = useState('');
     const [role, setRole] = useState('');
+
     
+function updateAppState(data) {
+   
+    setvUsername(data.username);
+    setId(data.id);
+    setRole(data.role);
+    setVerify(data.verify);
+
+}
     return (
         <Router>
             <Routes>
@@ -25,10 +36,11 @@ function App() {
                     vUsername={vUsername} 
                     setvUsername={setvUsername} 
                     role={role} 
-                    setRole={setRole}/>
+                    setRole={setRole}
+                    updateAppState={updateAppState}/>
                 }/>
 
-                <Route path={`/${vUsername}`} element={
+                <Route path={'/home/:username'} element={
                     <div>
                         <Homepage vUsername={vUsername}/>
                     </div>

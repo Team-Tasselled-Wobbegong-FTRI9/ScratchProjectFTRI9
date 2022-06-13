@@ -42,7 +42,7 @@ Patient_id, provider_id, starttime, endtime, startdate, enddate, days [{M: true}
 
 
 /api/request/{username} (GET)
-Patient_id, provider_id, starttime, endtime, startdate, enddate, days [{M: true}, {T: true},{W: true}, {Th:true}, {F:true} {SAT:true} {SUN:true}], message, status 
+patient_id, provider_id, starttime, endtime, startdate, enddate, days [{M: true}, {T: true},{W: true}, {Th:true}, {F:true} {SAT:true} {SUN:true}], message, status 
 
  res(200) - Send All Provider Requests From The Patient Matching Patient ID 
 
@@ -92,8 +92,8 @@ appControllers.createCondition = (req, res, next) => {
 
   db.query(queryObj)
     .then(response => {
-      console.log("conditions added");
-      return next()
+      console.log('conditions added');
+      return next();
     })
     .catch(err => {
       console.log(`Error trying to add conditions: ${err}`);
@@ -113,26 +113,31 @@ appControllers.createLocation = (req, res, next) => {
 
       db.query(locObj)
       .then(response => {
-        console.log("location found");
+        console.log('location found');
         console.log(response.rows);
         if (response.rows.length > 0){
+          console.log('in location response location', response.rows[0]);
             res.locals.location_id = response.rows[0].id;
-            
+            console.log('res locals',res.locals.location_id);
+            next();
         } else
         {
+          console.log('new location case');
             const queryObj = {
                 text: ' INSERT INTO location (city, state, zipcode) VALUES ($1, $2, $3) RETURNING ID ',
                 values: [  city, state, zipcode ]
               };
-               console.log("new record for locaiton")
+               console.log('new record for locaiton');
               db.query(queryObj)
                 .then(response => {
                   console.log("new location created");
-                  res.locals.location_id =response.rows[0].id;
-                 
-                })
+                  res.locals.location_id = response.rows[0].id;
+                  console.log(res.locals.location_id, response.rows);
+                  next();
+                });
 
         }
+      
       })
       .catch(err => {
         console.log(`Error trying to retrieve location: ${err}`);
@@ -140,46 +145,50 @@ appControllers.createLocation = (req, res, next) => {
       })
 
 
-      next();
+    
   }
   
 
 
 appControllers.createProfile = (req, res, next) => {
-  const { age, weight, address, role, phone, language, firstName, lastName } = req.body
-
+  console.log(req.body);
+  const { age, weight, address, role, phone, language, firstname, lastname } = req.body
+  console.log("in createProfile Controller locationid:", res.locals.location_id)
   const queryObj = {
-    text: ' INSERT INTO profile (age, weight, address, role, phone, language, firstName, lastName) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ',
-    values: [ parseInt(age), parseInt(weight), address, role, phone, language, firstName, lastName ]
+    text: ' INSERT INTO profile (age, weight, address, role, phone, language, firstname, lastname, location_id, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) ',
+    values: [ parseInt(age), parseInt(weight), address, role, phone, language, firstname, lastname, res.locals.location_id, res.locals.id ]
   };
 
   db.query(queryObj)
     .then(response => {
       console.log("profile created");
       res.locals.response = response;
-      return next()
+      return next();
     })
     .catch(err => {
       console.log(`Error trying to create profile: ${err}`);
       return next(err);
-    })
-}
+    });
+};
 
-appControllers.loginUser = (res, req, next) => {
+appControllers.loginUser = (req, res, next) => {
+  console.log("here is password", req.body);
+
+  
   const queryObj = {
     text: 'SELECT id, username, role FROM user_accounts WHERE password = $1 AND username =$2', 
-    values: [req.password, req.username ]
+    values: [req.body.password, req.body.username ]
   };
 
   db.query(queryObj)
     .then(response => {
-      console.log("user found");
+    
       if (response.rows.length > 0)
-      {
-        res.locals.response({"verify": true, "username": response.rows[0].username, "role": response.rows[0].role, "id":response.rows[0].id  });
+      { 
+        res.locals.response = {'verify': true, 'username': response.rows[0].username, 'role': response.rows[0].role, 'id':response.rows[0].id, location_id: res.locals.location_id };
       }else
-      {
-        res.locals.response({"verify": false });
+      {  
+        res.locals.response = {'verify': false };
 
       } 
       return next();
@@ -187,9 +196,250 @@ appControllers.loginUser = (res, req, next) => {
     .catch(err => {
       console.log(`Error trying to find user: ${err}`);
       return next(err);
-    })
+    });
 
 }
+
+appControllers.getUsers = (req,res,next)=> {
+
+  const username =  req.params.username;
+ // Query user_accounts 
+ // SELECT id, role FROM user_accounts WHERE username = $1, VALUES [ req.params.username]
+ const queryObj = {
+  text: 'SELECT id, role FROM user_accounts WHERE username = $1', 
+  values: [req.body.username ]
+};
+
+}
+
+appControllers.getIdRole = (req, res, next)=> {
+
+  const queryObj = {
+    text: 'SELECT id, username, role FROM user_accounts WHERE username = $1', 
+    values: [req.params.username ]
+  };
+
+  db.query(queryObj)
+  .then(response => {
+  
+    if (response.rows.length > 0)
+    { 
+      res.locals.id = response.rows[0].id;
+      res.locals.role = response.rows[0].role;
+      res.locals.username = response.rows[0].username;
+      console.log('getIDRole Response:', response.rows[0]);
+      
+    }else
+    {  
+      res.locals.id = ' ';
+      res.locals.role = 'patient';
+
+    } 
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to find userID and Role: ${err}`);
+    return next(err);
+  });
+
+  
+};
+
+
+appControllers.getUserLocation = (req, res, next)=> {
+
+  const queryObj = {
+    text: 'SELECT state, zipcode, city FROM location WHERE id = (SELECT location_id FROM profile WHERE user_id = (SELECT id FROM user_accounts WHERE username = $1));', 
+    values: [res.locals.username ]
+  };
+
+  db.query(queryObj)
+  .then(response => {
+  
+    if (response.rows.length > 0)
+    { 
+      res.locals.userCity = response.rows[0].city;
+      res.locals.userState = response.rows[0].state;
+      res.locals.userZipcode = response.rows[0].zipcode;
+      console.log('location', response.rows[0]);
+      
+    }else
+    {  
+      res.locals.userCity = ' ';
+      res.locals.userState = ' ';
+      res.locals.userZipcode = ' ';
+    } 
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to user location: ${err}`);
+    return next(err);
+  });
+
+  
+};
+
+appControllers.getProviderByCity = (req, res, next) => {
+
+  const queryObj = {
+    text: "SELECT * FROM user_accounts u INNER JOIN profile p ON  u.id = p.user_id INNER JOIN location l ON l.id = p.location_id INNER JOIN conditions c ON u.id= c.user_id WHERE u.role = 'provider' AND l.city = $1",
+    values: [res.locals.userCity]
+  };
+
+  db.query(queryObj)
+  .then(response => {
+  
+    if (response.rows.length > 0)
+    { 
+      res.locals.providersByCity = response.rows; 
+      console.log(res.locals.providersByCity);
+      
+    }else
+    {  
+      res.locals.providersByCity = null; 
+    } 
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to ProvidersByCity: ${err}`);
+    return next(err);
+  });
+
+
+
+};
+
+appControllers.getProviderByState = (req, res, next) => {
+
+  const queryObj = {
+    text: "SELECT * FROM user_accounts u INNER JOIN profile p ON  u.id = p.user_id INNER JOIN location l ON l.id = p.location_id INNER JOIN conditions c ON u.id= c.user_id WHERE u.role = 'provider' AND l.state = $1",
+    values: [res.locals.userState]
+  };
+
+  db.query(queryObj)
+  .then(response => {
+  
+    if (response.rows.length > 0)
+    { 
+      res.locals.providersByState = response.rows; 
+      console.log(res.locals.providersByState);
+      
+    }else
+    {  
+      res.locals.providersByState = null; 
+    } 
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to ProvidersByState: ${err}`);
+    return next(err);
+  });
+
+
+
+};
+
+
+appControllers.getProviderByZipcode = (req, res, next) => {
+
+  const queryObj = {
+    text: "SELECT * FROM user_accounts u INNER JOIN profile p ON  u.id = p.user_id INNER JOIN location l ON l.id = p.location_id INNER JOIN conditions c ON u.id= c.user_id WHERE u.role = 'provider' AND l.zipcode = $1",
+    values: [res.locals.userZipcode]
+  };
+
+  db.query(queryObj)
+  .then(response => {
+  
+    if (response.rows.length > 0)
+    { 
+      res.locals.providersByZipcode = response.rows; 
+      console.log(res.locals.providersByZipcode);
+      
+    }else
+    {  
+      res.locals.providersByZipcode = null; 
+    } 
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to ProvidersByState: ${err}`);
+    return next(err);
+  });
+
+
+
+};
+
+
+appControllers.createRequest = (req, res, next) => {
+
+  const { m, t, w, th, f, sat, sun,  message, status, patient_id,provider_id, starttime, endtime, startdate, enddate } = req.body;
+
+    
+  const queryObj = {
+    text: ' INSERT INTO request (starttime,endtime, startdate, enddate, message, status, provider_id, patient_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ',
+    values: [ starttime, endtime, startdate, enddate,   message, status, provider_id, patient_id]
+  };
+    
+  db.query(queryObj)
+  .then(response => {
+  
+    console.log("Request Record Creation Successful");
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to Create New Record Request: ${err}`);
+    return next(err);
+  });
+
+
+};
+
+appControllers.getRequest = (req, res, next)=> {
+
+ let queryObj = {};
+
+  if (req.params.role == 'provider')
+  {
+  queryObj = {
+    text: 'SELECT * FROM request WHERE provider_id = $1', 
+    values: [req.params.id ]
+  };
+} else {
+  queryObj = {
+    text: 'SELECT * FROM request WHERE patient_id = $1', 
+    values: [req.params.id ]
+  };
+
+}
+
+  db.query(queryObj)
+  .then(response => {
+  
+    if (response.rows.length > 0)
+    { 
+      res.locals.request = response.rows[0];
+     
+      console.log('Request Queue', response.rows[0]);
+      
+    }else
+    {  
+     res.locals.request = null;
+
+    } 
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to find healthcare requests: ${err}`);
+    return next(err);
+  });
+
+  
+};
+
+
+
+
 
 /* 
 /api/signup (Post)
@@ -201,3 +451,4 @@ conditions (checkbox/toggle alphabetical order - [{hypertension: true}, {diabete
     appControllers.createUser, appControllers.createCondition, appControllers.createProfile */
 
 module.exports = appControllers;
+

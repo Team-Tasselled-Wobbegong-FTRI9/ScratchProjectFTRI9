@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
     const [username, setUsername] = useState('');
@@ -34,7 +34,7 @@ export default function Signup() {
         afternoon: false,
         evening: false,
     });
-
+    const navigate = useNavigate();
     function conditionHandler(e) {
         if (e.target.checked) {
             const copy = {...conditions};
@@ -125,7 +125,7 @@ export default function Signup() {
                 evening: false,
             });
             alert('Sign-up Successful');
-            // window.location.href = '/login';
+            navigate('/login');
         }
     }
 
@@ -201,12 +201,12 @@ export default function Signup() {
                       <option value="korean">Korean</option>
               </select><br/>
             <label htmlFor="">Time: </label>
-            <label htmlFor=""> 
+            {/* <label htmlFor=""> 
                 <input type="checkbox" name='morning' checked={time.morning} onChange={timeHandler}/>Morning
                 <input type="checkbox" name='afternoon' checked={time.afternoon} onChange={timeHandler}/>Afternoon
                 <input type="checkbox" name='evening' checked={time.evening} onChange={timeHandler}/>Evening
             
-            </label><br/>
+            </label><br/> */}
         </div>
         <button id="Sign up" onClick={makeRequest}>Sign Up</button>
 
