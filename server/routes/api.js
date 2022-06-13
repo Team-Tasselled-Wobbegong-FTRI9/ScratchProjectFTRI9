@@ -13,9 +13,9 @@ router.post('/signup', appControllers.createUser, appControllers.createCondition
 
 /* route login attempts to confirm user's username and password */
 
-router.post('/login', (req, res) => {
+router.post('/login', appControllers.loginUser, (req, res) => {
   console.log("inside router. /login")
-  res.status(200).send('login succssful')
+  res.status(200).json(res.locals.response);
 })
 
 /*

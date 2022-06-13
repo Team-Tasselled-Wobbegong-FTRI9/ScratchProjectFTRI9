@@ -10,39 +10,46 @@ export default function Login({verify, setVerify, id, setId, vUsername, setvUser
       alert('Please fill out both fields.');
     } else {
       const data = {username, password};
+      console.log(data)
       fetch('/api/login', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data)
       })
       .then(res => res.json())
       .then(data => {
         setVerify(data.verify);
         setId(data.id);
-        // setvUsername(data.username);
+        setvUsername(data.username);
         setRole(data.role);
       })
       .catch(err => console.log(err));
-
-    //   if (!verify) {
-    //       alert('Check your credentials');
-    //       setUsername('');
-    //       setPassword('');
-    //   } else {
-    //       alert('Login Successful!');
-    //       window.location.href = `/${vUsername}`;
-    //   }
-
-      if (username === 'angel') {
-        console.log('angel is username');
-        setvUsername(username);
-        console.log('vUsername: ', vUsername);
-        alert('Login Successful!');
-        window.location.href = `/${vUsername}`;
+      console.log(verify);
+      console.log(id);
+      console.log(vUsername);
+      console.log(role);
+      if (!verify) {
+          alert('Check your credentials');
+          setUsername('');
+          setPassword('');
       } else {
-        alert('Check your credentials');
-        setUsername('');
-        setPassword('');
+          alert('Login Successful!');
+          window.location.href = `/${vUsername}`;
       }
+
+    //   if (username === 'angel') {
+    //     console.log('angel is username');
+    //     setvUsername(username);
+    //     console.log('vUsername: ', vUsername);
+    //     alert('Login Successful!');
+    //     window.location.href = `/${vUsername}`;
+    //   } else {
+    //     alert('Check your credentials');
+    //     setUsername('');
+    //     setPassword('');
+    //   }
 
     }
   }

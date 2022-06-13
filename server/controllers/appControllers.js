@@ -57,7 +57,7 @@ appControllers.createUser, appControllers.createCondition, appControllers.create
 */
 appControllers.createUser = (req, res, next) => {
 
-    
+    console.log(req);
     const queryObj = {
         text: 'INSERT INTO user_accounts (username, password, role) VALUES ($1, $2, $3) RETURNING id ',
         values: [req.body.username, req.body.password, req.body.role]
@@ -165,6 +165,31 @@ appControllers.createProfile = (req, res, next) => {
     })
 }
 
+appControllers.loginUser = (res, req, next) => {
+  const queryObj = {
+    text: 'SELECT id, username, role FROM user_accounts WHERE password = $1 AND username =$2', 
+    values: [req.password, req.username ]
+  };
+
+  db.query(queryObj)
+    .then(response => {
+      console.log("user found");
+      if (response.rows.length > 0)
+      {
+        res.locals.response({"verify": true, "username": response.rows[0].username, "role": response.rows[0].role, "id":response.rows[0].id  });
+      }else
+      {
+        res.locals.response({"verify": false });
+
+      } 
+      return next();
+    })
+    .catch(err => {
+      console.log(`Error trying to find user: ${err}`);
+      return next(err);
+    })
+
+}
 
 /* 
 /api/signup (Post)
