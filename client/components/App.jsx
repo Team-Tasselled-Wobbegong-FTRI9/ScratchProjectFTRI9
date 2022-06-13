@@ -11,7 +11,12 @@ function App() {
     const [id, setId] = useState('');
     const [vUsername, setvUsername] = useState('');
     const [role, setRole] = useState('');
+    const [info, setInfo] = useState([]);
 
+
+function updateInfo(data) {
+    setInfo(data);
+}
     
 function updateAppState(data) {
     setvUsername(data.username);
@@ -40,7 +45,7 @@ function updateAppState(data) {
 
                 <Route path={'/home/:username/:id'} element={
                     <div>
-                        <Homepage vUsername={vUsername} id={id}/>
+                        <Homepage vUsername={vUsername} id={id} info={info} setInfo={setInfo} updateInfo={updateInfo}/>
                     </div>
                 }/>
             </Routes>
