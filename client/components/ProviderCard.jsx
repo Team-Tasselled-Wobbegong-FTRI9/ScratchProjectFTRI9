@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Popup from './Popup.jsx';
 
 export default function ProviderCard({provider}) {
-    const {email, firstname, lastname,city, state, conditions} = provider;
+    const {email, firstname, lastname, city, state, conditions} = provider;
     // const {username, password, email, firstname, lastname, age, weight, role, address, city, state, zipcode, phone, conditions, language} = info;
     const [isOpen, setIsOpen] = useState(false);
 
@@ -19,6 +19,8 @@ export default function ProviderCard({provider}) {
             <button onClick={togglePopup}>Contact for More Info</button>
 
             {isOpen && <Popup
+            firstname={firstname}
+            lastname={lastname}
             togglePopup={togglePopup}
             />}
 
