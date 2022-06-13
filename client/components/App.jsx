@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
 import Homepage from './Homepage.jsx';
+import Requests from './Requests.jsx'
 
 
 
@@ -48,6 +49,9 @@ function updateAppState(data) {
                         <Homepage vUsername={vUsername} id={id} info={info} setInfo={setInfo} updateInfo={updateInfo}/>
                     </div>
                 }/>
+                <Route path='/requests' element={
+                    <Requests vUsername={vUsername} id={id} info={info} setInfo={setInfo} updateInfo={updateInfo} />
+                } />
             </Routes>
         </Router>
     );

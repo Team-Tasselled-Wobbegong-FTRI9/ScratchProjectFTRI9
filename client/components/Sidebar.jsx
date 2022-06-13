@@ -5,7 +5,7 @@ import '../scss/sidebar.scss';
 export default function Sidebar() {
   return (
     <Menu>
-      <a className="menu-item" href="/">
+      <a className="menu-item" href="/home">
         Home
       </a>
       <a className="menu-item" href="/profile">

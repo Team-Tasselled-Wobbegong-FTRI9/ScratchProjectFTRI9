@@ -48,10 +48,12 @@ export default function Login(props) {
 
             <label>Password: </label>
               <input value={password} type="password" onChange={(e) => setPassword(e.target.value)}/><br/><br/>
+          <div className="buttons">
               <button id="loginBtn" onClick={makeRequest}>Log in</button>
               <Link to='/signup'>
-                <h5>Sign Up</h5>
+              <button id="signupBtn">Sign Up</button>
               </Link>
+          </div>
       </div>
     </section>
   );

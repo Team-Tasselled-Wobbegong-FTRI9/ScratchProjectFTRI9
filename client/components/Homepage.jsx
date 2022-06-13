@@ -4,8 +4,8 @@ import Sidebar from './Sidebar.jsx';
 import ProviderList from './ProviderList.jsx';
 
 export default function Homepage({vUsername, id, info, setInfo, updateInfo}) {
-    console.log(info)
-    console.log('hi')
+  console.log(info);
+  console.log('hi');
 
     const [providerInfo, setProviderInfo] = useState({City:[], State:[], ZipCode:[]});
     useEffect(() => {

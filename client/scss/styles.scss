@@ -53,23 +53,38 @@ input[type=text]:focus, input[type=password]:focus {
   outline: none;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 10px 16px;
+  width: 100px;
+}
 #signupBtn {
-  background-color: white; /* Green */
+  background-color: white;
   border: 1px solid #4CAF50;
   border-radius: 5px;
   color: #4CAF50;
-  padding: 10px 24px;
+  
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px; 
   transition-duration: 0.4s;
+  margin: 10px;
   &:hover {
-    background-color: #4CAF50; /* Green */
+    background-color: #8f8f8f9f;
+      border: 1px solid white;
+      /* Green */
     color: white;
   }
 }
 
+// signUpBtn
 //login section
 #loginbg {
   background: rgb(92, 199, 142);
@@ -91,18 +106,21 @@ input[type=text]:focus, input[type=password]:focus {
 }
 
 #loginBtn {
-  background-color: white; /* Green */
+  background-color: #4CAF50;
+    /* Green */
   border: 1px solid #4CAF50;
   border-radius: 5px;
-  color: #4CAF50;
-  padding: 8px 16px;
+  color: white;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px; 
   transition-duration: 0.4s;
+  margin: 10px;
   &:hover {
-    background-color: #4CAF50; /* Green */
+    background-color: #8f8f8f9f;
+      border: 1px solid white;
+      /* Green */
     color: white;
   }
 }
@@ -212,6 +230,6 @@ font-size: 20px;
   height: 100px;
 }
 
-#submitBtn {
+// #submitBtn {
   
-}
+// }
