@@ -560,38 +560,33 @@ appControllers.deleteRequest = (req, res, next) => {
 };
 
 
-/*
-appController.updateRequest = (req, res, next) => {
 
-  const { m, t, w, th, f, sat, sun,  message, status, patient_id, provider_id, starttime, endtime, startdate, enddate } = req.body;
+appControllers.updateRequest = (req, res, next) => {
 
-  let userId;
+  const { m, t, w, th, f, sat, sun,  message, status, patient_id, provider_id, starttime, endtime, startdate, enddate, id } = req.body;
 
-  if (!patient_id) {
-    userId = provider_id
-  } else {
-    userId = patient_id
-  }
+  
 
   const queryObj = {
-    text: ' UPDATE request SET (starttime = $1, endtime = $2, startdate = $3, enddate = $4, m = $5, t = $6, w = $7, th = $8, f = $9, sat = $10 , sun = $11, message = $12, status = $13) WHERE provider_id = $14 OR provider_id = $14 RETURNING *',
-    values: [ starttime, endtime, startdate, enddate, m, t, w, th, f, sat, sun,  message, status, userId ]
+    text: ' UPDATE request SET starttime = $1, endtime = $2, startdate = $3, enddate = $4, m = $5, t = $6, w = $7, th = $8, f = $9, sat = $10 , sun = $11, message = $12, status = $13 WHERE id = $14  RETURNING *',
+    values: [ starttime, endtime, startdate, enddate, m, t, w, th, f, sat, sun,  message, status, id ]
   };
 
   db.query(queryObj)
     .then(response => {
-      console.log(`Update successful in updateRequest middleware query`);
+      console.log('Update successful in updateRequest middleware query');
+      console.log(response);
       res.locals.updatedResponse = response;
       return next();
     })
     .catch(err => {
       console.log(`Error occured in updateRequest middleware: ${err}`);
       return next();
-    })
+    });
 
 };
 
-*/
+
 /* 
 /api/signup (Post)
 username, password, age (String), weight (String), address (String), city(String), state (String, 2-Letter), zip(String), role (patient, provider) 

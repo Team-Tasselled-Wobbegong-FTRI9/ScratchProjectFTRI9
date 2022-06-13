@@ -64,6 +64,15 @@ router.post('/deleteRequest',appControllers.deleteRequest, (req, res) => {
   
 });
 
+router.post('/updateRequest',appControllers.updateRequest, (req, res) => {
+  console.log('ran /updateRequest route');
+  /*const {patient_id, provider_id, starttime, endtime, startdate, enddate, days , message, status } = req.body; */
+
+  res.status(200).send('update Request Successful');
+  
+});
+
+
 
 
 
