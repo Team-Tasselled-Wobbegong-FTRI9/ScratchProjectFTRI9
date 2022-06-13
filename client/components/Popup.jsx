@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
  
-function Popup({togglePopup, firstname, lastname, provider, patient_id}) {
+function Popup({ togglePopup, firstname, lastname, conditions, provider, patient_id, requestInfo, setRequestInfo }) {
    
     const [starttime, setStarttime] = useState('');
     const [endtime, setEndtime] = useState('');
@@ -19,7 +19,8 @@ function Popup({togglePopup, firstname, lastname, provider, patient_id}) {
     const [status, setStatus] = useState('pending');
 
     function handleClick() {
-      const data = {starttime, 
+      const data = {
+        starttime, 
         endtime, 
         startdate, 
         enddate, 
@@ -33,20 +34,40 @@ function Popup({togglePopup, firstname, lastname, provider, patient_id}) {
         message, 
         status, 
         provider_id: provider.id, 
-        patient_id}
-      fetch('/api/request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then()
-
+        patient_id
+      };
+      // fetch('/api/request', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(data)
+      // })
+      // .then(res => res.json())
+      // .catch((err)=> console.log(err));
+      // .then()
+      requestInfo.push({ firstname: firstname, lastname: lastname, conditions: conditions });
+      setRequestInfo(requestInfo);
+      console.log('requestInfo in Popup', requestInfo);
+      alert('Request Submitted')
     }
+
     function clean() {
-   
+      setStarttime('');
+      setEndtime('');
+      setStartdate('');
+      setEnddate('');
+      setDays({
+        m: false,
+        t: false,
+        w: false,
+        th: false,
+        f: false,
+        sat: false,
+        sun: false
+      });
+      setMessage('');
+      setStatus('');
     }
 
     function daysHandler(e) {
@@ -61,9 +82,6 @@ function Popup({togglePopup, firstname, lastname, provider, patient_id}) {
       }
     }
 
-console.log(starttime)
-console.log(endtime)
-console.log(days)
   return (
     <div className="popup-box">
       <div className="box">
