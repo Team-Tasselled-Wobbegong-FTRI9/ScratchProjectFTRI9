@@ -69,7 +69,7 @@ appControllers.createUser = (req, res, next) => {
       .then(response => {
        res.locals.id = response.rows[0].id;
        console.log(response);
-       next()
+       next();
   
       }).catch(err =>{
         
@@ -152,11 +152,11 @@ appControllers.createLocation = (req, res, next) => {
 
 appControllers.createProfile = (req, res, next) => {
   console.log(req.body);
-  const { age, weight, address, role, phone, language, firstname, lastname } = req.body
+  const { age, weight, address, role, phone, email, language, firstname, lastname } = req.body
   console.log("in createProfile Controller locationid:", res.locals.location_id)
   const queryObj = {
-    text: ' INSERT INTO profile (age, weight, address, role, phone, language, firstname, lastname, location_id, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) ',
-    values: [ parseInt(age), parseInt(weight), address, role, phone, language, firstname, lastname, res.locals.location_id, res.locals.id ]
+    text: ' INSERT INTO profile (age, weight, address, role, phone, email, language, firstname, lastname, location_id, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ',
+    values: [ parseInt(age), parseInt(weight), address, role, phone, email,language, firstname, lastname, res.locals.location_id, res.locals.id ]
   };
 
   db.query(queryObj)
@@ -254,7 +254,7 @@ appControllers.getUserLocation = (req, res, next)=> {
 
   const queryObj = {
     text: 'SELECT state, zipcode, city FROM location WHERE id = (SELECT location_id FROM profile WHERE user_id = $1);', 
-    values: [res.locals.id ]
+    values: [req.params.id ]
   };
 
   db.query(queryObj)
@@ -262,13 +262,14 @@ appControllers.getUserLocation = (req, res, next)=> {
   
     if (response.rows.length > 0)
     { 
+      console.log(response.rows[0])
       res.locals.userCity = response.rows[0].city;
       res.locals.userState = response.rows[0].state;
       res.locals.userZipcode = response.rows[0].zipcode;
       console.log('location', response.rows[0]);
       
     }else
-    {  
+    {  console.log("no records in getlocation")
       res.locals.userCity = ' ';
       res.locals.userState = ' ';
       res.locals.userZipcode = ' ';
@@ -295,12 +296,39 @@ appControllers.getProviderByCity = (req, res, next) => {
   
     if (response.rows.length > 0)
     { 
+      const copyArray = [];
+      let obj = {};
+        for (const record in response.rows)
+        {
+
+          obj = response.rows[record];
+          obj.conditions = { 
+               'hypertension': response.rows[record].hypertension, 
+               'diabetes' : response.rows[record].diabetes, 
+               'cancer' : response.rows[record].cancer,
+               'alzheimers': response.rows[record].alzheimers,
+               'dementia': response.rows[record].dementia,
+               'smoking': response.rows[record].smoking,
+               'parkinsons': response.rows[record].parkinsons,
+               'arthritis': response.rows[record].arthritis,
+               'ckd': response.rows[record].ckd,
+               'stroke': response.rows[record].stroke,
+               'copd': response.rows[record].copd,
+               'osteoporosis': response.rows[record].osteoporosis,
+             
+        };
+         copyArray.push(obj);
+      }
+
+
       res.locals.providersByCity = response.rows; 
+      res.locals.providersByCityFormatted = copyArray;
       console.log(res.locals.userCity);
       
     }else
     {  
-      res.locals.providersByCity = null; 
+      res.locals.providersByCity = null;
+      res.locals.providersByCityFormatted = null; 
     } 
     return next();
   })
@@ -325,11 +353,48 @@ appControllers.getProviderByState = (req, res, next) => {
   
     if (response.rows.length > 0)
     { 
+
+      const copyArray = [];
+      let obj = {};
+        for (const record in response.rows)
+        {
+
+          obj = response.rows[record];
+          obj.conditions = { 
+               'hypertension': response.rows[record].hypertension, 
+               'diabetes' : response.rows[record].diabetes, 
+               'cancer' : response.rows[record].cancer,
+               'alzheimers': response.rows[record].alzheimers,
+               'dementia': response.rows[record].dementia,
+               'smoking': response.rows[record].smoking,
+               'parkinsons': response.rows[record].parkinsons,
+               'arthritis': response.rows[record].arthritis,
+               'ckd': response.rows[record].ckd,
+               'stroke': response.rows[record].stroke,
+               'copd': response.rows[record].copd,
+               'osteoporosis': response.rows[record].osteoporosis,
+             
+        };
+         copyArray.push(obj);
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+      res.locals.providersByStateFormatted = copyArray;
       res.locals.providersByState = response.rows; 
       console.log(res.locals.providersByState);
       
     }else
-    {  
+    {  res.locals.providersByStateFormatted = null;
       res.locals.providersByState = null; 
     } 
     return next();
@@ -356,11 +421,39 @@ appControllers.getProviderByZipcode = (req, res, next) => {
   
     if (response.rows.length > 0)
     { 
+
+
+      const copyArray = [];
+      let obj = {};
+        for (const record in response.rows)
+        {
+
+          obj = response.rows[record];
+          obj.conditions = { 
+               'hypertension': response.rows[record].hypertension, 
+               'diabetes' : response.rows[record].diabetes, 
+               'cancer' : response.rows[record].cancer,
+               'alzheimers': response.rows[record].alzheimers,
+               'dementia': response.rows[record].dementia,
+               'smoking': response.rows[record].smoking,
+               'parkinsons': response.rows[record].parkinsons,
+               'arthritis': response.rows[record].arthritis,
+               'ckd': response.rows[record].ckd,
+               'stroke': response.rows[record].stroke,
+               'copd': response.rows[record].copd,
+               'osteoporosis': response.rows[record].osteoporosis,
+             
+        };
+         copyArray.push(obj);
+      }
+
+
+      res.locals.providersByZipcodeFormatted = copyArray;
       res.locals.providersByZipcode = response.rows; 
       console.log(res.locals.providersByZipcode);
       
     }else
-    {  
+    {  res.locals.providersByZipcodeFormatted = null;
       res.locals.providersByZipcode = null; 
     } 
     return next();
@@ -381,8 +474,8 @@ appControllers.createRequest = (req, res, next) => {
 
     
   const queryObj = {
-    text: ' INSERT INTO request (starttime,endtime, startdate, enddate, message, status, provider_id, patient_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ',
-    values: [ starttime, endtime, startdate, enddate,   message, status, provider_id, patient_id]
+    text: ' INSERT INTO request (starttime,endtime, startdate, enddate, m, t, w, th, f, sat, sun,message, status, provider_id, patient_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) ',
+    values: [ starttime, endtime, startdate, enddate, m, t, w, th, f, sat, sun,  message, status, provider_id, patient_id]
   };
     
   db.query(queryObj)
@@ -442,9 +535,63 @@ appControllers.getRequest = (req, res, next)=> {
 };
 
 
+appControllers.deleteRequest = (req, res, next) => {
+
+  const requestId = req.body.id;
+
+    
+  const queryObj = {
+    text: ' DELETE from request WHERE id = $1 ',
+    values: [requestId ]
+  };
+    
+  db.query(queryObj)
+  .then(response => {
+  
+    console.log("Delete Request Successful");
+    return next();
+  })
+  .catch(err => {
+    console.log(`Error trying to Delete Request Record: ${err}`);
+    return next(err);
+  });
 
 
+};
 
+
+/*
+appController.updateRequest = (req, res, next) => {
+
+  const { m, t, w, th, f, sat, sun,  message, status, patient_id, provider_id, starttime, endtime, startdate, enddate } = req.body;
+
+  let userId;
+
+  if (!patient_id) {
+    userId = provider_id
+  } else {
+    userId = patient_id
+  }
+
+  const queryObj = {
+    text: ' UPDATE request SET (starttime = $1, endtime = $2, startdate = $3, enddate = $4, m = $5, t = $6, w = $7, th = $8, f = $9, sat = $10 , sun = $11, message = $12, status = $13) WHERE provider_id = $14 OR provider_id = $14 RETURNING *',
+    values: [ starttime, endtime, startdate, enddate, m, t, w, th, f, sat, sun,  message, status, userId ]
+  };
+
+  db.query(queryObj)
+    .then(response => {
+      console.log(`Update successful in updateRequest middleware query`);
+      res.locals.updatedResponse = response;
+      return next();
+    })
+    .catch(err => {
+      console.log(`Error occured in updateRequest middleware: ${err}`);
+      return next();
+    })
+
+};
+
+*/
 /* 
 /api/signup (Post)
 username, password, age (String), weight (String), address (String), city(String), state (String, 2-Letter), zip(String), role (patient, provider) 
