@@ -43,11 +43,11 @@ export default function Login(props) {
       <div id='loginsection'>
         <h2>Login</h2>
             <label>Username: </label>
-              <input value={username} type="text" onChange={(e) => setUsername(e.target.value)}/><br/><br/>
+          <input value={username} type="text" onChange={(e) => setUsername(e.target.value)} /><br />
 
 
             <label>Password: </label>
-              <input value={password} type="password" onChange={(e) => setPassword(e.target.value)}/><br/><br/>
+          <input value={password} type="password" onChange={(e) => setPassword(e.target.value)} /><br />
           <div className="buttons">
               <button id="loginBtn" onClick={makeRequest}>Log in</button>
               <Link to='/signup'>

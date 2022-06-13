@@ -9,10 +9,13 @@ export default function Requests({ vUsername, id, info, setInfo, updateInfo, req
   console.log('requestInfo in Requests', requestInfo)
   console.log(result)
   return (
-    <div>
+    <div id='requestCardDisplay'>
       <Header vUsername={vUsername} />
       <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
-      {result}
+      <div id='reqCards'>
+        {result}
+      </div>
+
     </div>
   );
 }
