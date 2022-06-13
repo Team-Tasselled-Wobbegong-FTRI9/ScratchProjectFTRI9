@@ -30,8 +30,8 @@ export default function Login(props) {
           navigate(`/home/${data.username}/${data.id}`);
         } else {
           alert('Check your credentials');
-          props.setUsername('');
-          props.setPassword('');
+          setUsername('');
+          setPassword('');
         }
       })
       .catch(err => console.log(err));

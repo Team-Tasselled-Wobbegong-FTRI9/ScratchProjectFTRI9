@@ -10,7 +10,7 @@ export default function Header({vUsername}) {
     </div>
     <div className="header__link">
         <ul className="header__link__logo">
-            <li>Welcome {vUsername}</li>
+            <li>Welcome {vUsername}!</li>
             <Link to='/login'>
                 <li><button>Log out</button></li>
             </Link>
