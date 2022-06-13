@@ -10,11 +10,10 @@ export default function ProviderList({providerInfo, patient_id}) {
   // {firstname: 'kevin', lastname: 'park', email: 'kevin@gmail.com', city: 'hi', state: 'hi', conditions: 'hi'} ,
   // {firstname: 'kevin', lastname: 'park', email: 'kevin@gmail.com', city: 'hi', state: 'hi', conditions: 'hi'},
   // {firstname: 'kevin', lastname: 'park', email: 'kevin@gmail.com', city: 'hi', state: 'hi', conditions: 'hi'}  ,  {firstname: 'kevin', lastname: 'park', email: 'kevin@gmail.com', city: 'hi', state: 'hi', conditions: 'hi'}  ,  {firstname: 'kevin', lastname: 'park', email: 'kevin@gmail.com', city: 'hi', state: 'hi', conditions: 'hi'}  ,  {firstname: 'kevin', lastname: 'park', email: 'kevin@gmail.com', city: 'hi', state: 'hi', conditions: 'hi'}  ,  {firstname: 'kevin', lastname: 'park', email: 'kevin@gmail.com', city: 'hi', state: 'hi', conditions: 'hi'}    ];
-
   let result;
   if (providerInfo.ZipCode === null && providerInfo.City === null && providerInfo.State === null) {
     result = 'No Matching Result';
-  }
+  } 
   else {
     if (providerInfo.ZipCode === null) {
       providerInfo.ZipCode = [];
@@ -26,11 +25,10 @@ export default function ProviderList({providerInfo, patient_id}) {
       providerInfo.State = [];
     }
     const providerByCity = [...providerInfo.ZipCode, ...providerInfo.City, ...providerInfo.State];
-    result = providerByCity.map((provider, ind) => <ProviderCard key={`ProviderCard: ${ind}`} provider={provider} patient_id={patient_id} />);
+    result = providerByCity.map((provider, ind) => <ProviderCard key={`ProviderCard: ${ind}`} provider={provider} patient_id={patient_id}/>);
   }
 
   return (
-
     <div id='cardDisplay'>
       {result}
     </div>

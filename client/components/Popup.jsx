@@ -19,7 +19,8 @@ function Popup({togglePopup, firstname, lastname, provider, patient_id}) {
     const [status, setStatus] = useState('pending');
 
     function handleClick() {
-      const data = {starttime, 
+      const data = {
+        starttime, 
         endtime, 
         startdate, 
         enddate, 
@@ -33,7 +34,8 @@ function Popup({togglePopup, firstname, lastname, provider, patient_id}) {
         message, 
         status, 
         provider_id: provider.id, 
-        patient_id}
+        patient_id
+      };
       fetch('/api/request', {
         method: 'POST',
         headers: {
@@ -42,11 +44,26 @@ function Popup({togglePopup, firstname, lastname, provider, patient_id}) {
         body: JSON.stringify(data)
       })
       .then(res => res.json())
-      .then()
+      .catch((err)=> console.log(err));
+      // .then()
 
     }
     function clean() {
-   
+      setStarttime('');
+      setEndtime('');
+      setStartdate('');
+      setEnddate('');
+      setDays({
+        m: false,
+        t: false,
+        w: false,
+        th: false,
+        f: false,
+        sat: false,
+        sun: false
+      });
+      setMessage('');
+      setStatus('');
     }
 
     function daysHandler(e) {
