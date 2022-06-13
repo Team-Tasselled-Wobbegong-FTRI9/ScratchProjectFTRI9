@@ -4,8 +4,6 @@ import Sidebar from './Sidebar.jsx';
 import ProviderList from './ProviderList.jsx';
 
 export default function Homepage({vUsername, id, info, setInfo, updateInfo}) {
-    console.log(info)
-    console.log('hi')
 
     const [providerInfo, setProviderInfo] = useState({City:[], State:[], ZipCode:[]});
     useEffect(() => {
@@ -13,6 +11,7 @@ export default function Homepage({vUsername, id, info, setInfo, updateInfo}) {
         console.log('in userEffect', id);
         fetch(`/api/username/${vUsername}/${id}`)
         .then(response => response.json())
+        //getting null value when not found
         .then(data => {
             console.log(data);
             updateInfo(data);
@@ -22,7 +21,7 @@ export default function Homepage({vUsername, id, info, setInfo, updateInfo}) {
         .catch(err => console.log(err));
     }, []);
 
- 
+ console.log(providerInfo)
   return (
     <div>
       <Header vUsername={vUsername}/>
