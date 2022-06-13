@@ -11,10 +11,10 @@ export default function Sidebar() {
       <a className="menu-item" href="/profile">
         Profile
       </a>
-      <a className="menu-item" href="/providers">
-        Providers
+      <a className="menu-item" href="/requests">
+        Requests
       </a>
-      <a className="menu-item" href="/logout">
+      <a className="menu-item" href="/login">
         Log out
       </a>
     </Menu>
