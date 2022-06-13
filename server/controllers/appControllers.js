@@ -213,10 +213,11 @@ appControllers.getUsers = (req,res,next)=> {
 }
 
 appControllers.getIdRole = (req, res, next)=> {
-
+console.log('getIdRole');
+  
   const queryObj = {
-    text: 'SELECT id, username, role FROM user_accounts WHERE username = $1', 
-    values: [req.params.username ]
+    text: 'SELECT id, username, role FROM user_accounts WHERE id = $1', 
+    values: [req.params.id ]
   };
 
   db.query(queryObj)
@@ -227,7 +228,10 @@ appControllers.getIdRole = (req, res, next)=> {
       res.locals.id = response.rows[0].id;
       res.locals.role = response.rows[0].role;
       res.locals.username = response.rows[0].username;
-      console.log('getIDRole Response:', response.rows[0]);
+      //console.log('getIDRole Response:', response.rows[0]);
+      //console.log('id', res.locals.id);
+      //console.log('role', res.locals.role)
+     // console.log('username', res.locals.username)
       
     }else
     {  
@@ -249,8 +253,8 @@ appControllers.getIdRole = (req, res, next)=> {
 appControllers.getUserLocation = (req, res, next)=> {
 
   const queryObj = {
-    text: 'SELECT state, zipcode, city FROM location WHERE id = (SELECT location_id FROM profile WHERE user_id = (SELECT id FROM user_accounts WHERE username = $1));', 
-    values: [res.locals.username ]
+    text: 'SELECT state, zipcode, city FROM location WHERE id = (SELECT location_id FROM profile WHERE user_id = $1);', 
+    values: [res.locals.id ]
   };
 
   db.query(queryObj)
@@ -292,7 +296,7 @@ appControllers.getProviderByCity = (req, res, next) => {
     if (response.rows.length > 0)
     { 
       res.locals.providersByCity = response.rows; 
-      console.log(res.locals.providersByCity);
+      console.log(res.locals.userCity);
       
     }else
     {  

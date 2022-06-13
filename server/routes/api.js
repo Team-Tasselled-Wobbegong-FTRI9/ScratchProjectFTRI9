@@ -22,9 +22,14 @@ router.post('/login',appControllers.loginUser, (req, res) => {
 /*
 '/username/{:username}' Retrieve providers/patient based on match contained in user profile State (or improve the response back) 
 */
-router.get('/username/:username', appControllers.getIdRole, appControllers.getUserLocation,appControllers.getProviderByState, appControllers.getProviderByCity,appControllers.getProviderByZipcode, (req, res) => {
+/*
+, appControllers.getUserLocation,appControllers.getProviderByState, appControllers.getProviderByCity,appControllers.getProviderByZipcode
+
+
+*/
+router.get('/username/:username/:id', appControllers.getIdRole, appControllers.getUserLocation, appControllers.getProviderByState, appControllers.getProviderByCity, (req, res) => {
     console.log(req.params.username);
-    console.log('username:/username route' );
+    console.log('username:/username/:id route' );
     res.status(200).json({'ZipCode': res.locals.providersByZipcode,'State':res.locals.providersByState, 'City':res.locals.providersByCity});
 }
 );
