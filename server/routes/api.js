@@ -30,7 +30,15 @@ router.post('/login',appControllers.loginUser, (req, res) => {
 router.get('/username/:username/:id', appControllers.getIdRole, appControllers.getUserLocation, appControllers.getProviderByState, appControllers.getProviderByCity, appControllers.getProviderByZipcode, (req, res) => {
     console.log(req.params.username);
     console.log('username:/username/:id route' );
-    res.status(200).json({'ZipCode': res.locals.providersByZipcode,'State':res.locals.providersByState, 'City':res.locals.providersByCity});
+    res.status(200).json({'ZipCode': res.locals.providersByZipcode,
+    'ZipCodeFormatted': res.locals.providersByZipcodeFormatted,
+  
+    'State':res.locals.providersByState,
+    'StateFormatted': res.locals.providersByStateFormatted,
+
+    'City':res.locals.providersByCity,
+    'CityFormatted': res.locals.providersByCityFormatted
+  });
 }
 );
 
@@ -45,6 +53,18 @@ router.post('/request', appControllers.createRequest, (req, res) => {
     res.status(200).send('create successful.');
     
   });
+
+
+/* Generates new request from patient to initiate provider for services */
+router.post('/deleteRequest',appControllers.deleteRequest, (req, res) => {
+  console.log('ran /deleteRequest route');
+  /*const {patient_id, provider_id, starttime, endtime, startdate, enddate, days , message, status } = req.body; */
+
+  res.status(200).send('delete Request Successful');
+  
+});
+
+
 
 
   /* gathers request of services for users - must submit user ID, user role*/
