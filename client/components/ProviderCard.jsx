@@ -2,7 +2,15 @@ import React, {useState} from 'react';
 import Popup from './Popup.jsx';
 
 export default function ProviderCard({ provider, patient_id, requestInfo, setRequestInfo }) {
-    const {email, firstname, lastname, city, state, conditions} = provider;
+    const {email, firstname, lastname, city, state, conditions, phone} = provider;
+    console.log(conditions)
+    const specialty = [];
+    for (const [key, value] of Object.entries(conditions)) {
+        if (value) {
+            specialty.push(key);
+        }
+    }
+    console.log(specialty)
     // const {username, password, email, firstname, lastname, age, weight, role, address, city, state, zipcode, phone, conditions, language} = info;
     const [isOpen, setIsOpen] = useState(false);
 
@@ -14,9 +22,10 @@ export default function ProviderCard({ provider, patient_id, requestInfo, setReq
         <div id='card'>
             <div>
                 <h3>Name: {firstname} {lastname}</h3>
-                <h4>Email: {email}</h4>
-                <h4>Location: {city}, {state}</h4>
-                <h4>Specialization: {conditions}</h4>
+                <h5>Email: {email}</h5>
+                <h5>Phone: {phone}</h5>
+                <h5>Location: {city}, {state}</h5>
+                <h5>Specialization: {specialty.join(', ')}</h5>
                 <button id='contactBtn' onClick={togglePopup}>Contact for More Info</button>
             </div>
             <div>

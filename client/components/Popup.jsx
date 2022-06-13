@@ -49,7 +49,7 @@ function Popup({ togglePopup, firstname, lastname, conditions, provider, patient
       requestInfo.push({ firstname: firstname, lastname: lastname, conditions: conditions });
       setRequestInfo(requestInfo);
       console.log('requestInfo in Popup', requestInfo);
-      alert('Request Submitted')
+      alert('Request Submitted');
     }
 
     function clean() {
